@@ -13,7 +13,7 @@ class DrawView: public QWidget
     Q_OBJECT
 
 public:
-    explicit DrawView(DrawViewConfiguration config, QWidget *parent = nullptr);
+    DrawView(DrawViewConfiguration config, QWidget *parent = nullptr);
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;

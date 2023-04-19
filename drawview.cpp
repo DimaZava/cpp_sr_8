@@ -17,7 +17,7 @@ QSize DrawView::minimumSizeHint() const
 
 QSize DrawView::sizeHint() const
 {
-    return QSize(400, 200);
+    return QSize(800, 800);
 }
 
 void DrawView::setShape(DrawViewConfiguration::Shape shape)
@@ -53,10 +53,10 @@ void DrawView::setTransformed(bool transformed)
 void DrawView::paintEvent(QPaintEvent * /* event */)
 {
     static const QPoint points[4] = {
-        QPoint(10, 80),
-        QPoint(20, 10),
-        QPoint(80, 30),
-        QPoint(90, 70)
+        QPoint(50, 400),
+        QPoint(100, 50),
+        QPoint(400, 150),
+        QPoint(450, 350)
     };
 
     QRect rect(10, 20, 80, 60);
@@ -71,16 +71,11 @@ void DrawView::paintEvent(QPaintEvent * /* event */)
     if (configuration.antialiased)
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-    QPoint center = QPoint(width() / 2, height() / 2);
-    painter.save();
-    painter.translate(center);
-
     if (configuration.transformed) {
-        painter.translate(50, 50);
         painter.rotate(60.0);
-        painter.scale(0.6, 0.9);
-        painter.translate(-50, -50);
     }
+
+    painter.save();
 
     switch (configuration.shape) {
     case DrawViewConfiguration::Line:

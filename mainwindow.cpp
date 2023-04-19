@@ -14,13 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->drawView = new DrawView(DrawViewConfiguration::makeDefault());
-    //this->drawToolsDock = std::make_shared<DrawToolsDock>(DrawToolsDock(DrawToolsDockController(*this)));
     this->drawToolsDock = new DrawToolsDock(DrawToolsDockController(*this));
     this->configureUI();
 }
 
 MainWindow::~MainWindow()
 {
+    delete drawView;
+    delete drawToolsDock;
     delete ui;
 }
 

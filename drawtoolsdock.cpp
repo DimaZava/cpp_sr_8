@@ -4,26 +4,27 @@
 #include <QPen>
 
 DrawToolsDock::DrawToolsDock(DrawToolsDockController controller) :
-    _controller(controller)
+    _controller(std::make_unique<DrawToolsDockController>(controller))
 {
     setupToolsToolbar();
 }
 
 DrawToolsDock::DrawToolsDock(const DrawToolsDock &source) :
-    _controller(source._controller)
+    _controller(source._controller.get())
 {
     setupToolsToolbar();
 }
 
 DrawToolsDock::DrawToolsDock(DrawToolsDock &&source) :
-    _controller(source._controller)
+    _controller(source._controller.get())
 {
     setupToolsToolbar();
+    source._controller.release();
 }
 
 DrawToolsDock::~DrawToolsDock()
 {
-    // _controller == nullptr;
+    _controller.reset();
 }
 
 void DrawToolsDock::setupToolsToolbar()
@@ -69,31 +70,31 @@ void DrawToolsDock::setupToolsToolbar()
 void DrawToolsDock::setNewShape()
 {
     qInfo("Invoked setNewShape");
-    _controller.updateShape(DrawViewConfiguration::Shape::Pie);
+    _controller.get()->updateShape(DrawViewConfiguration::Shape::Pie);
 }
 
 void DrawToolsDock::setNewPen()
 {
     qInfo("Invoked setNewPen");
     QPen newPen = QPen(Qt::green, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin);
-    _controller.updatePen(newPen);
+    _controller.get()->updatePen(newPen);
 }
 
 void DrawToolsDock::setNewBrush()
 {
     qInfo("Invoked setNewBrush");
     QBrush newBrush = QBrush(Qt::red, Qt::DiagCrossPattern);
-    _controller.updateBrush(newBrush);
+    _controller.get()->updateBrush(newBrush);
 }
 
 void DrawToolsDock::toggleAntialiased()
 {
     qInfo("Invoked toggleAntialiased");
-    _controller.updateAntialiased(true);
+    _controller.get()->updateAntialiased(true);
 }
 
 void DrawToolsDock::toggleTransformed()
 {
     qInfo("Invoked toggleTransformed");
-    _controller.updateTransformed(true);
+    _controller.get()->updateTransformed(true);
 }

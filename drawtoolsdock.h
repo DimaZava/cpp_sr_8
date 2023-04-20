@@ -15,7 +15,7 @@ public:
     ~DrawToolsDock();
 
 private:
-    DrawToolsDockController _controller;
+    std::unique_ptr<DrawToolsDockController> _controller;
 
     void setupToolsToolbar();
 

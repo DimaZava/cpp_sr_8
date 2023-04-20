@@ -62,8 +62,8 @@ private:
 
     QAction *aboutAct;
 
-    DrawView *drawView;
-    DrawToolsDock *drawToolsDock;
+    std::unique_ptr<DrawView> drawView;
+    std::unique_ptr<DrawToolsDock> drawToolsDock;
 
     void configureUI();
     void createMenus();

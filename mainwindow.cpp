@@ -13,21 +13,21 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->drawView = new DrawView(DrawViewConfiguration::makeDefault());
-    this->drawToolsDock = new DrawToolsDock(DrawToolsDockController(*this));
-    this->configureUI();
+    drawView = std::unique_ptr<DrawView>(new DrawView(DrawViewConfiguration::makeDefault()));
+    drawToolsDock = std::unique_ptr<DrawToolsDock>(new DrawToolsDock(DrawToolsDockController(*this)));
+    configureUI();
 }
 
 MainWindow::~MainWindow()
 {
-    delete drawView;
-    delete drawToolsDock;
+    drawView.release();
+    drawToolsDock.release();
     delete ui;
 }
 
 void MainWindow::configureUI()
 {
-    setCentralWidget(this->drawView);
+    setCentralWidget(drawView.get());
 
     createActions();
     createMenus();
@@ -119,7 +119,7 @@ void MainWindow::createActions()
 
 void MainWindow::setupToolsToolbar()
 {
-    addDockWidget(Qt::LeftDockWidgetArea, drawToolsDock);
+    addDockWidget(Qt::LeftDockWidgetArea, drawToolsDock.get());
 }
 
 void MainWindow::newFile()

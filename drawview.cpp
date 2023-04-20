@@ -133,5 +133,4 @@ void DrawView::paintEvent(QPaintEvent * /* event */)
     painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(palette().dark().color());
     painter.setBrush(Qt::NoBrush);
-    painter.drawRect(QRect(0, 0, width() - 1, height() - 1));
 }

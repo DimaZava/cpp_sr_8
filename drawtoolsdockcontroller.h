@@ -6,28 +6,26 @@
 class DrawToolsDockControllerDelegate
 {
 public:
-    virtual void didChangeShape(DrawViewConfiguration::Shape shape) {};
-    virtual void didChangePen(QPen pen) {};
-    virtual void didChangeBrush(QBrush brush) {};
-    virtual void didChangeAntialiased(bool isAntialiased) {};
-    virtual void didChangeTransformed(bool isTransformed) {};
+    virtual void didChangeConfiguration(DrawViewConfiguration configuration) {};
 };
 
 class DrawToolsDockController
 {
 public:
-    DrawToolsDockController(DrawToolsDockControllerDelegate &delegate);
+    DrawToolsDockController(DrawViewConfiguration configuration, DrawToolsDockControllerDelegate &delegate);
     DrawToolsDockController(const DrawToolsDockController &controller);
     DrawToolsDockController(DrawToolsDockController &&controller);
 
+    void reloadConfiguration();
     void updateShape(DrawViewConfiguration::Shape shape);
     void updatePen(QPen pen);
     void updateBrush(QBrush brush);
     void updateAntialiased(bool isAntialiased);
     void updateTransformed(bool isTransformed);
+
 private:
     DrawToolsDockControllerDelegate &_delegate;
-
+    DrawViewConfiguration _configuration;
 };
 
 #endif // DRAWTOOLSDOCKCONTROLLER_H

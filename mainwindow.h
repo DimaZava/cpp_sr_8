@@ -36,11 +36,7 @@ private slots:
 
     #pragma region DrawToolsDockControllerDelegate
 
-    void didChangeShape(DrawViewConfiguration::Shape shape) override;
-    void didChangePen(QPen pen) override;
-    void didChangeBrush(QBrush brush) override;
-    void didChangeAntialiased(bool isAntialiased) override;
-    void didChangeTransformed(bool isTransformed) override;
+    void didChangeConfiguration(DrawViewConfiguration configuration) override;
 
     #pragma endregion DrawToolsDockControllerDelegate
 private:
@@ -61,6 +57,8 @@ private:
     QAction *pasteAct;
 
     QAction *aboutAct;
+
+    std::shared_ptr<DrawToolsDockController> _controller;
 
     std::unique_ptr<DrawView> drawView;
     std::unique_ptr<DrawToolsDock> drawToolsDock;

@@ -1,8 +1,18 @@
 #include "drawtoolsdockcontroller.h"
 
-DrawToolsDockController::DrawToolsDockController(DrawToolsDockControllerDelegate &delegate) :
-    _delegate(delegate)
-{}
+DrawToolsDockController::DrawToolsDockController(
+DrawViewConfiguration configuration,
+DrawToolsDockControllerDelegate &delegate
+)
+    : _configuration(configuration)
+    , _delegate(delegate)
+{
+}
+
+void DrawToolsDockController::reloadConfiguration()
+{
+    _delegate.didChangeConfiguration(_configuration);
+}
 
 DrawToolsDockController::DrawToolsDockController(const DrawToolsDockController &controller) :
     _delegate(controller._delegate)
@@ -16,25 +26,30 @@ DrawToolsDockController::DrawToolsDockController(DrawToolsDockController &&contr
 
 void DrawToolsDockController::updateShape(DrawViewConfiguration::Shape shape)
 {
-    _delegate.didChangeShape(shape);
+    _configuration.shape = shape;
+    _delegate.didChangeConfiguration(_configuration);
 }
 
 void DrawToolsDockController::updatePen(QPen pen)
 {
-    _delegate.didChangePen(pen);
+    _configuration.pen = pen;
+    _delegate.didChangeConfiguration(_configuration);
 }
 
 void DrawToolsDockController::updateBrush(QBrush brush)
 {
-    _delegate.didChangeBrush(brush);
+    _configuration.brush = brush;
+    _delegate.didChangeConfiguration(_configuration);
 }
 
 void DrawToolsDockController::updateAntialiased(bool isAntialiased)
 {
-    _delegate.didChangeAntialiased(isAntialiased);
+    _configuration.antialiased = isAntialiased;
+    _delegate.didChangeConfiguration(_configuration);
 }
 
 void DrawToolsDockController::updateTransformed(bool isTransformed)
 {
-    _delegate.didChangeTransformed(isTransformed);
+    _configuration.transformed = isTransformed;
+    _delegate.didChangeConfiguration(_configuration);
 }

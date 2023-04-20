@@ -9,13 +9,13 @@ class DrawToolsDock : public QDockWidget
     Q_OBJECT
 
 public:
-    DrawToolsDock(DrawToolsDockController controller);
+    DrawToolsDock(std::shared_ptr<DrawToolsDockController> controller);
     DrawToolsDock(const DrawToolsDock &source);
     DrawToolsDock(DrawToolsDock &&source);
     ~DrawToolsDock();
 
 private:
-    std::unique_ptr<DrawToolsDockController> _controller;
+    std::shared_ptr<DrawToolsDockController> _controller;
 
     void setupToolsToolbar();
 

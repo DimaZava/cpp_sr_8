@@ -13,23 +13,18 @@ class DrawView: public QWidget
     Q_OBJECT
 
 public:
-    DrawView(DrawViewConfiguration config, QWidget *parent = nullptr);
+    DrawView(QWidget *parent = nullptr);
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
 
-public slots:
-    void setShape(DrawViewConfiguration::Shape shape);
-    void setPen(const QPen &pen);
-    void setBrush(const QBrush &brush);
-    void setAntialiased(bool antialiased);
-    void setTransformed(bool transformed);
+    void updateConfiguration(DrawViewConfiguration configuration);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    DrawViewConfiguration configuration;
+    DrawViewConfiguration _configuration;
 };
 
 #endif // DRAWVIEW_H

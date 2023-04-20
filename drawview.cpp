@@ -2,9 +2,8 @@
 #include <QPainter>
 #include <QPainterPath>
 
-DrawView::DrawView(DrawViewConfiguration config, QWidget *parent)
+DrawView::DrawView(QWidget *parent)
     : QWidget(parent)
-    , configuration(config)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -20,33 +19,9 @@ QSize DrawView::sizeHint() const
     return QSize(800, 800);
 }
 
-void DrawView::setShape(DrawViewConfiguration::Shape shape)
+void DrawView::updateConfiguration(DrawViewConfiguration configuration)
 {
-    this->configuration.shape = shape;
-    update();
-}
-
-void DrawView::setPen(const QPen &pen)
-{
-    this->configuration.pen = pen;
-    update();
-}
-
-void DrawView::setBrush(const QBrush &brush)
-{
-    this->configuration.brush = brush;
-    update();
-}
-
-void DrawView::setAntialiased(bool antialiased)
-{
-    this->configuration.antialiased = antialiased;
-    update();
-}
-
-void DrawView::setTransformed(bool transformed)
-{
-    this->configuration.transformed = transformed;
+    _configuration = configuration;
     update();
 }
 
@@ -65,19 +40,19 @@ void DrawView::paintEvent(QPaintEvent * /* event */)
     int arcLength = 120 * 16;
 
     QPainter painter(this);
-    painter.setPen(configuration.pen);
-    painter.setBrush(configuration.brush);
+    painter.setPen(_configuration.pen);
+    painter.setBrush(_configuration.brush);
 
-    if (configuration.antialiased)
+    if (_configuration.antialiased)
         painter.setRenderHint(QPainter::Antialiasing, true);
 
-    if (configuration.transformed) {
+    if (_configuration.transformed) {
         painter.rotate(60.0);
     }
 
     painter.save();
 
-    switch (configuration.shape) {
+    switch (_configuration.shape) {
     case DrawViewConfiguration::Line:
         painter.drawLine(rect.bottomLeft(), rect.topRight());
         break;

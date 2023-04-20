@@ -3,28 +3,26 @@
 #include <QToolBar>
 #include <QPen>
 
-DrawToolsDock::DrawToolsDock(DrawToolsDockController controller) :
-    _controller(std::make_unique<DrawToolsDockController>(controller))
+DrawToolsDock::DrawToolsDock(std::shared_ptr<DrawToolsDockController> controller)
+    : _controller(controller)
 {
     setupToolsToolbar();
 }
 
-DrawToolsDock::DrawToolsDock(const DrawToolsDock &source) :
-    _controller(source._controller.get())
+DrawToolsDock::DrawToolsDock(const DrawToolsDock &source)
+    : _controller(source._controller)
 {
     setupToolsToolbar();
 }
 
-DrawToolsDock::DrawToolsDock(DrawToolsDock &&source) :
-    _controller(source._controller.get())
+DrawToolsDock::DrawToolsDock(DrawToolsDock &&source)
+    : _controller(source._controller)
 {
     setupToolsToolbar();
-    source._controller.release();
 }
 
 DrawToolsDock::~DrawToolsDock()
 {
-    _controller.reset();
 }
 
 void DrawToolsDock::setupToolsToolbar()
@@ -96,5 +94,5 @@ void DrawToolsDock::toggleAntialiased()
 void DrawToolsDock::toggleTransformed()
 {
     qInfo("Invoked toggleTransformed");
-    _controller.get()->updateTransformed(true);
+     _controller.get()->updateTransformed(true);
 }

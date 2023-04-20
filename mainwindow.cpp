@@ -13,8 +13,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    drawView = std::unique_ptr<DrawView>(new DrawView(DrawViewConfiguration::makeDefault()));
-    drawToolsDock = std::unique_ptr<DrawToolsDock>(new DrawToolsDock(DrawToolsDockController(*this)));
+    _controller = std::shared_ptr<DrawToolsDockController>(new DrawToolsDockController(DrawViewConfiguration::makeDefault(), *this));
+    drawView = std::unique_ptr<DrawView>(new DrawView());
+    drawToolsDock = std::unique_ptr<DrawToolsDock>(new DrawToolsDock(_controller));
+
     configureUI();
 }
 
@@ -32,6 +34,7 @@ void MainWindow::configureUI()
     createActions();
     createMenus();
     setupToolsToolbar();
+    _controller.get()->reloadConfiguration();
 }
 
 void MainWindow::createMenus()
@@ -175,29 +178,9 @@ void MainWindow::about()
 
 #pragma region DrawToolsDockControllerDelegate
 
-void MainWindow::didChangeShape(DrawViewConfiguration::Shape shape)
+void MainWindow::didChangeConfiguration(DrawViewConfiguration configuration)
 {
-    drawView->setShape(shape);
-}
-
-void MainWindow::didChangePen(QPen pen)
-{
-    drawView->setPen(pen);
-}
-
-void MainWindow::didChangeBrush(QBrush brush)
-{
-    drawView->setBrush(brush);
-}
-
-void MainWindow::didChangeAntialiased(bool isAntialiased)
-{
-    drawView->setAntialiased(isAntialiased);
-}
-
-void MainWindow::didChangeTransformed(bool isTransformed)
-{
-    drawView->setTransformed(isTransformed);
+    drawView->updateConfiguration(configuration);
 }
 
 #pragma endregion DrawToolsDockControllerDelegate
